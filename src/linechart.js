@@ -16,7 +16,9 @@ class LineChart {
       'stroke': '#0066DE',
       'color': '#2F8FFF',
       'stroke-width': '8',
-      'gradient': true
+      'gradient': true,
+      'stroke-linecap': 'round',
+      'stroke-linejoin': 'round',
     }
     this.generator = new Generator(this);
   }
