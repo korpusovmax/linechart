@@ -14,7 +14,7 @@ Just add linechart.js from src directory to your project. And add this lines to 
 
 Now in your main.js you can create graph (don't forget to import linechart.js!)
 ```js
-import { LineChart } from './../src/linechart.js'
+import { LineChart } from 'path/to/linechart.js'
 
 let array = [8, 3, 7, 6, 9, 2];
 let linechart_1 = new LineChart("chart1", 400, 200, array);
