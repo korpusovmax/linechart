@@ -2,7 +2,7 @@ class LineChart {
   constructor(element_id, width, height, array) {
     this.id = element_id;
     this.div = document.getElementById(this.id);
-    this.div.innerHTML += '<svg id="' + element_id + '_svg" viewBox="0 0 400 200" width="' + width + '" height="' + height + '" xmlns="http://www.w3.org/2000/svg"></svg>';
+    this.div.innerHTML += '<svg id="' + element_id + '_svg" width="' + width + '" height="' + height + '" xmlns="http://www.w3.org/2000/svg"></svg>';
     this.svg = document.getElementById(this.id + '_svg');
     this.svg.innerHTML += '<path id="' + element_id + '_background_path" fill="transparent"></path><path id="' + element_id + '_path" fill="transparent"></path><defs id="' + element_id + '_defs"></defs>';
     this.path = document.getElementById(this.id + '_path');
