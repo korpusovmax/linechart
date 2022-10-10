@@ -1,10 +1,11 @@
 # LineChart
 Easy-to-use js library for building graphs using svg.
-## Example
-<img src="images\img.png" alt="demo"/>
+## Examples
+<img src="images\demo_1.png" alt="demo1"/>
+<img src="images\demo_2.png" alt="demo2"/>
 
 ## How to use
-Just add linechart.js from src directory to your project. And add this lines to your .html
+Just add linechart.js from 'src' directory to your project. And add this lines to your .html
 
 ```html
 <div id="chart1"></div>
@@ -20,3 +21,5 @@ let array = [8, 3, 7, 6, 9, 2];
 let linechart_1 = new LineChart("chart1", 400, 200, array);
 linechart_1.update();
 ```
+
+Also you can explore some examples in 'tests' directory.
