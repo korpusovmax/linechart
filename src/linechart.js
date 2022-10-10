@@ -8,10 +8,11 @@ class LineChart {
     this.path = document.getElementById(this.id + '_path');
     this.bpath = document.getElementById(this.id + '_background_path');
     this.defs = document.getElementById(this.id + '_defs');
-    this.data = array;
+    this.data = array.slice(); // copy array
     this.params = {
       'width': width,
       'height': height,
+      'segment': 'curve',
       'padding': 8,
       'stroke': '#0066DE',
       'color': '#2F8FFF',
@@ -32,6 +33,7 @@ class LineChart {
 
 class Generator {
   constructor(line_chart) {
+    this.id = line_chart.id;
     this.params = line_chart.params;
     this.data = line_chart.data;
     this.svg_path = line_chart.path;
@@ -40,8 +42,8 @@ class Generator {
   }
 
   make_gradient() {
-    this.defs.innerHTML += '<linearGradient id="gradient1" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="' + this.params['color'] +'"/><stop offset="100%" stop-color="' + this.params['color'] + '" stop-opacity="0"/></linearGradient>';
-    this.bsvg_path.setAttribute('fill', 'url(#gradient1)');
+    this.defs.innerHTML += '<linearGradient id="gradient_' + this.id + '" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="' + this.params['color'] +'"/><stop offset="100%" stop-color="' + this.params['color'] + '" stop-opacity="0"/></linearGradient>';
+    this.bsvg_path.setAttribute('fill', 'url(#gradient_' + this.id + ')');
   }
 
   apply_styles(path) {
@@ -68,11 +70,11 @@ class Generator {
     for (var i = 0; i < this.data.length; i++) {
       this.data[i] = (max_value-this.data[i])/max_value;
     }
-    // console.log(this.data);
+    console.log(this.data);
   }
 
   draw() {
-    // TODO: if data.len == 0 || 1
+    // TODO: if data.len == 1 (dot)
     var count = this.data.length;
     var padding = this.params['padding'];
     var height = this.params['height']-padding*2
@@ -84,13 +86,15 @@ class Generator {
     + 'L ' + padding + ' ' + (this.data[0]*height+parseInt(padding)) + ' ';
     // Drawing bezier curves
     for (var i = 0; i < count-1; i++) {
-      var changes = 'C ' + (block_width*(2*i+1)+parseInt(padding)) + ' ' + (this.data[i]*height+parseInt(padding)) + ' '
-      + (block_width*(2*i+1)+parseInt(padding)) + ' ' + (this.data[i+1]*height+parseInt(padding)) + ' '
-      + (block_width*(2*(i+1))+parseInt(padding)) + ' ' + (this.data[i+1]*height+parseInt(padding)) + ' ';
+    var changes = '';
+      if (this.params['segment'] == 'curve') {
+        changes = 'C ' + (block_width*(2*i+1)+parseInt(padding)) + ' ' + (this.data[i]*height+parseInt(padding)) + ' '
+        + (block_width*(2*i+1)+parseInt(padding)) + ' ' + (this.data[i+1]*height+parseInt(padding)) + ' '
+        + (block_width*(2*(i+1))+parseInt(padding)) + ' ' + (this.data[i+1]*height+parseInt(padding)) + ' ';
+      } else if (this.params['segment'] == 'line') {
+        changes = 'L ' + (block_width*(2*(i+1))+parseInt(padding)) + ' ' + (this.data[i+1]*height+parseInt(padding)) + ' ';
+      }
       path_str += changes;
-      // if (i == count-2) {
-      //   path_str += 'L ' + (block_width*(2*(count-1))+parseInt(padding)+parseInt(this.params['stroke-width'])/2) + ' ' + (this.data[i+1]*height+parseInt(padding));
-      // }
       background_path_str += changes;
     }
     // Apply changes
