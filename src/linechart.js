@@ -65,6 +65,7 @@ class Generator {
   }
 
   normalyze() {
+    //TODO: max-value manually setup (in constructor)
     // Normalyzing data. Diapason from 0 to 1
     var max_value = Math.max.apply(null,  this.data);
     for (var i = 0; i < this.data.length; i++) {
@@ -73,13 +74,15 @@ class Generator {
     console.log(this.data);
   }
 
+  //TODO: rename to 'render'
+  //TODO: side hints
+  //TODO: side arrows
   draw() {
-    // TODO: if data.len == 1 (dot)
     var count = this.data.length;
     var padding = this.params['padding'];
     var height = this.params['height']-padding*2
     var block_width = (this.params['width']-padding*2)/(count-1)/2;
-
+    //TODO: segment type - block
     // Move to (0, value[1])
     var path_str = 'M ' + padding + ' ' + (this.data[0]*height+parseInt(padding)) + ' ';
     var background_path_str = 'M ' + padding + ' ' + (height+parseInt(padding)+parseInt(this.params['stroke-width'])/2) + ' '
@@ -87,19 +90,24 @@ class Generator {
     // Drawing bezier curves
     for (var i = 0; i < count-1; i++) {
     var changes = '';
-      if (this.params['segment'] == 'curve') {
+
+        if (this.params['segment'] == 'curve') {
         changes = 'C ' + (block_width*(2*i+1)+parseInt(padding)) + ' ' + (this.data[i]*height+parseInt(padding)) + ' '
         + (block_width*(2*i+1)+parseInt(padding)) + ' ' + (this.data[i+1]*height+parseInt(padding)) + ' '
         + (block_width*(2*(i+1))+parseInt(padding)) + ' ' + (this.data[i+1]*height+parseInt(padding)) + ' ';
-      } else if (this.params['segment'] == 'line') {
+        } else if (this.params['segment'] == 'line') {
         changes = 'L ' + (block_width*(2*(i+1))+parseInt(padding)) + ' ' + (this.data[i+1]*height+parseInt(padding)) + ' ';
-      }
-      path_str += changes;
-      background_path_str += changes;
+        }
+        path_str += changes;
+        background_path_str += changes;
     }
+
+    // TODO: if data.len == 1 (dot)
     // Apply changes
     this.svg_path.setAttribute('d', path_str);
-    this.bsvg_path.setAttribute('d', background_path_str + 'L ' + (block_width*(2*(count-1))+parseInt(padding)) + ' ' + (height+parseInt(padding)+parseInt(this.params['stroke-width'])/2) + ' Z');
+    if (this.data.length != 1) {
+        this.bsvg_path.setAttribute('d', background_path_str + 'L ' + (block_width*(2*(count-1))+parseInt(padding)) + ' ' + (height+parseInt(padding)+parseInt(this.params['stroke-width'])/2) + ' Z');
+    }
   }
 }
 
