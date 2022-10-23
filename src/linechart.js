@@ -10,6 +10,7 @@ class LineChart {
     this.defs = document.getElementById(this.id + '_defs');
     this.data = array.slice(); // copy array
     this.params = {
+      'max_value': Math.max.apply(null,  this.data),
       'width': width,
       'height': height,
       'segment': 'curve',
@@ -65,11 +66,9 @@ class Generator {
   }
 
   normalyze() {
-    //TODO: max-value manually setup (in constructor)
     // Normalyzing data. Diapason from 0 to 1
-    var max_value = Math.max.apply(null,  this.data);
     for (var i = 0; i < this.data.length; i++) {
-      this.data[i] = (max_value-this.data[i])/max_value;
+      this.data[i] = (this.params['max_value']-this.data[i])/this.params['max_value'];
     }
     console.log(this.data);
   }
