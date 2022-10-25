@@ -28,7 +28,7 @@ class LineChart {
   update() {
     this.generator.create_styles(this.params);
     this.generator.normalyze();
-    this.generator.draw();
+    this.generator.render();
   }
 }
 
@@ -73,10 +73,9 @@ class Generator {
     console.log(this.data);
   }
 
-  //TODO: rename to 'render'
   //TODO: side hints
   //TODO: side arrows
-  draw() {
+  render() {
     var count = this.data.length;
     var padding = this.params['padding'];
     var height = this.params['height']-padding*2
